@@ -32,7 +32,7 @@ def generate_response(user_input):
 
     # Datos de la solicitud
     payload = {
-        "model": "deepseek-ai/DeepSeek-R1",
+        "model": "Meta-Llama-3.1-405B-Instruct-Turbo",
         "max_completion_tokens": 500,
         "temperature": 1,
         "top_p": 1,

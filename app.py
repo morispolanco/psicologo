@@ -3,12 +3,12 @@ import subprocess
 import json
 
 # Configuración inicial de la aplicación
-st.set_page_config(page_title="Chatbot CRAFT", page_icon="💬", layout="wide")
+st.set_page_config(page_title="Terapeuta Virtual", page_icon="💬", layout="wide")
 
 # Título y descripción
-st.title("💬 Chatbot CRAFT: Tu Compañero de Crecimiento Personal")
+st.title("💬 Terapeuta Virtual: Tu Compañero de Crecimiento Personal")
 st.markdown("""
-Bienvenido al Chatbot CRAFT, tu compañero virtual para explorar tus pensamientos, emociones y comportamientos. 
+Bienvenido al **Terapeuta Virtual**, tu compañero para explorar tus pensamientos, emociones y comportamientos. 
 Este chatbot utiliza técnicas basadas en **Terapia Cognitivo-Conductual (CBT)**, **Mindfulness** y **Psicología Positiva** 
 para ayudarte a navegar por desafíos personales y emocionales.
 """)
@@ -93,4 +93,4 @@ Tu privacidad es nuestra prioridad. Todas las conversaciones son confidenciales 
 
 # Footer
 st.markdown("---")
-st.markdown("Creado con ❤️ por [Tu Nombre] | Versión 1.0")
+st.markdown('[© 2025 Hablemosbien](https://hablemosbien.org)')

@@ -32,8 +32,8 @@ def generate_response(user_input):
 
     # Datos de la solicitud
     payload = {
-        "model": "Meta-Llama-3.1-405B-Instruct-Turbo",
-        "max_completion_tokens": 500,
+        "model": "kluster/Meta-Llama-3.1-405B-Instruct-Turbo",
+        "max_completion_tokens": 5000,
         "temperature": 1,
         "top_p": 1,
         "messages": [

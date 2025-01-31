@@ -1,14 +1,14 @@
 import streamlit as st
-import requests
-from datetime import datetime
+import subprocess
+import json
 
 # Configuración inicial de la aplicación
-st.set_page_config(page_title="Psicólogo", page_icon="💬")
+st.set_page_config(page_title="Chatbot CRAFT", page_icon="💬", layout="wide")
 
 # Título y descripción
-st.title("💬 Psicólogo: Tu Compañero de Crecimiento Personal")
+st.title("💬 Chatbot CRAFT: Tu Compañero de Crecimiento Personal")
 st.markdown("""
-Bienvenido al Chatbot Psicólogo, tu compañero virtual para explorar tus pensamientos, emociones y comportamientos. 
+Bienvenido al Chatbot CRAFT, tu compañero virtual para explorar tus pensamientos, emociones y comportamientos. 
 Este chatbot utiliza técnicas basadas en **Terapia Cognitivo-Conductual (CBT)**, **Mindfulness** y **Psicología Positiva** 
 para ayudarte a navegar por desafíos personales y emocionales.
 """)
@@ -22,7 +22,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Función para generar respuestas usando la API de Kluster.ai
+# Función para generar respuestas usando curl
 def generate_response(user_input):
     # Obtener la clave API desde secrets
     kluster_api_key = st.secrets["KLUSTER_API_KEY"]
@@ -32,9 +32,9 @@ def generate_response(user_input):
 
     # Datos de la solicitud
     payload = {
-        "model": "kluster/Meta-Llama-3.1-405B-Instruct-Turbo",
-        "max_completion_tokens": 5000,
-        "temperature": 1,
+        "model": "klusterai/Meta-Llama-3.1-405B-Instruct-Turbo",
+        "max_completion_tokens": 500,
+        "temperature": 0.6,
         "top_p": 1,
         "messages": [
             {"role": "system", "content": "Eres un asistente empático que ayuda a los usuarios a reflexionar sobre sus pensamientos y emociones."},
@@ -42,23 +42,24 @@ def generate_response(user_input):
         ]
     }
 
-    # Encabezados de la solicitud
-    headers = {
-        "Authorization": f"Bearer {kluster_api_key}",
-        "Content-Type": "application/json"
-    }
+    # Construir el comando curl
+    curl_command = [
+        "curl", "-s", url,
+        "-H", f"Authorization: Bearer {kluster_api_key}",
+        "-H", "Content-Type: application/json",
+        "-d", json.dumps(payload)
+    ]
 
     try:
-        # Realizar la solicitud POST a la API
-        response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()  # Lanza un error si la solicitud falla
+        # Ejecutar el comando curl
+        result = subprocess.run(curl_command, capture_output=True, text=True, check=True)
 
-        # Extraer la respuesta del modelo
-        data = response.json()
+        # Parsear la respuesta JSON
+        data = json.loads(result.stdout)
         bot_reply = data["choices"][0]["message"]["content"]
         return bot_reply
-    except requests.exceptions.RequestException as e:
-        st.error(f"Error al comunicarse con la API: {e}")
+    except subprocess.CalledProcessError as e:
+        st.error(f"Error al comunicarse con la API: {e.stderr}")
         return "Lo siento, ocurrió un error al procesar tu solicitud."
 
 # Entrada del usuario
@@ -92,4 +93,4 @@ Tu privacidad es nuestra prioridad. Todas las conversaciones son confidenciales 
 
 # Footer
 st.markdown("---")
-st.markdown("Creado con ❤️ por Moris Polanco | Versión 1.0")
+st.markdown("Creado con ❤️ por [Tu Nombre] | Versión 1.0")
